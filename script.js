@@ -364,20 +364,28 @@ function renderDriverCards(region) {
     const container = document.getElementById('driver-cards');
     container.innerHTML = '';
 
-    const driversList = ["Agriculture", "Logging", "Urbanization", "Roads"];
+    // Map from display title to the expected API key name
+    const driverKeyMap = {
+        "Palay and Corn": "Agriculture",
+        "Logging": "Logging",
+        "Urbanization": "Urbanization",
+        "Infrastructure": "Roads" // Assuming Infrastructure maps to Roads
+    };
+
+    const driversList = Object.keys(driverKeyMap);
 
     const descriptions = {
-        "Agriculture": "Harvested area in hectares – conversion of forest to cropland",
-        "Logging": "Timber extraction impact",
-        "Urbanization": "City expansion effects",
-        "Roads": "Infrastructure development"
+        "Palay and Corn": "Harvested area in hectares – conversion of forest to cropland",
+        "Logging": "Log production and extraction impact",
+        "Urbanization": "City expansion effects - urban population in the Philippines",
+        "Infrastructure": "Infrastructure development - length of national roads"
     };
 
     const emojiMap = {
-        "Agriculture": "🌾",
+        "Palay and Corn": "🌾",
         "Logging": "🪵",
         "Urbanization": "🏙️",
-        "Roads": "🛣️"
+        "Infrastructure": "🛣️"
     };
 
     // If NO region selected → show empty cards
@@ -414,8 +422,10 @@ function renderDriverCards(region) {
     );
 
     driversList.forEach(driver => {
-        // Check for both "Driver" and "Driver_km" in the API data
-        const d = drivers.find(item => item.Driver === driver || item.Driver === driver + "_km");
+        const apiKey = driverKeyMap[driver];
+
+        // Search for the data using the API Key Name
+        const d = drivers.find(item => item.Driver === apiKey || item.Driver === apiKey + "_km");
 
         // Handle missing records
         const coefValue = d ? Number(d.Coefficient) : null;
