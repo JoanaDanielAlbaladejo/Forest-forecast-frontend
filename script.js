@@ -105,14 +105,10 @@ async function initializeData() {
         populateRegionSelects();
         loadAccuracyTable(); 
 
-        // Placeholder calls
-        // loadDriverCoefficients();
-        // loadDriverHistory();
-
         console.log('Data initialized successfully:', globalData);
 
     } catch (err) {
-        showError('Loading data...');
+        showError('Error loading initial data.');
     }
 }
 
@@ -127,8 +123,8 @@ function populateRegionSelects() {
         .join("");
 
     /* -------------------------------
-       FOREST COVER REGION SELECT
-       ------------------------------- */
+        FOREST COVER REGION SELECT
+    ------------------------------- */
     if (regionSelect) {
         regionSelect.innerHTML = `<option value="">Select a region...</option>${opts}`;
 
@@ -138,8 +134,8 @@ function populateRegionSelects() {
     }
 
     /* -------------------------------
-       DRIVERS REGION SELECT
-       ------------------------------- */
+        DRIVERS REGION SELECT
+    ------------------------------- */
     if (driverRegionSelect) {
         driverRegionSelect.innerHTML = `<option value="">Select a region...</option>${opts}`;
 
@@ -153,8 +149,8 @@ function populateRegionSelects() {
     }
 
     /* -------------------------------
-       ACCURACY REGION SELECT
-       ------------------------------- */
+        ACCURACY REGION SELECT
+    ------------------------------- */
     if (accuracyRegionSelect) {
         // Only include "All Regions" if there is data to display
         const allOpts = `<option value="">All Regions</option>${opts}`;
@@ -203,7 +199,7 @@ function runAnalysis(region) {
     const avgMAE = maes.length ? (maes.reduce((a,b)=>a+b,0)/maes.length) : null;
     const avgMAPE = mapes.length ? (mapes.reduce((a,b)=>a+b,0)/mapes.length) : null;
 
-    // Convert MAE to percentage of latest tree cover
+    // Convert MAE to percentage of latest tree cover (using MAE / Actual)
     const latestTreeCover = latestData?.Actual ?? 1; // avoid division by zero
     const avgMAEPercent = avgMAE !== null ? (avgMAE / latestTreeCover * 100) : null;
 
@@ -222,9 +218,15 @@ function runAnalysis(region) {
     // Setup tab switching logic
     const tabs = document.querySelectorAll('.tab');
 
+    // Remove existing listeners to prevent duplicates
     tabs.forEach(tab => {
+        tab.replaceWith(tab.cloneNode(true));
+    });
+    const newTabs = document.querySelectorAll('.tab');
+    
+    newTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
+            newTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
             const region = regionSelect.value;
@@ -246,6 +248,7 @@ function runAnalysis(region) {
     });
 }
 
+// Re-add event listener to the main select dropdown (if it exists)
 const regionSelect = document.getElementById('region-select');
 if (regionSelect) {
     regionSelect.addEventListener('change', () => {
@@ -336,6 +339,9 @@ function renderComparisonChart(region) {
 
 function renderChart(labels, datasets) {
     const container = document.getElementById('chart-container');
+    // Ensure the chart container element is present before proceeding
+    if (!container) return;
+    
     container.innerHTML = `<canvas id="main-chart"></canvas>`;
 
     const ctx = document.getElementById('main-chart').getContext('2d');
@@ -362,6 +368,8 @@ function renderChart(labels, datasets) {
 ========================================================= */
 function renderDriverCards(region) {
     const container = document.getElementById('driver-cards');
+    if (!container) return;
+    
     container.innerHTML = '';
 
     // Map from display title to the expected API key name
@@ -369,7 +377,7 @@ function renderDriverCards(region) {
         "Palay and Corn": "Agriculture",
         "Logging": "Logging",
         "Urbanization": "Urbanization",
-        "Infrastructure": "Roads" // Assuming Infrastructure maps to Roads
+        "Infrastructure": "Roads"
     };
 
     const driversList = Object.keys(driverKeyMap);
@@ -394,7 +402,6 @@ function renderDriverCards(region) {
             const card = document.createElement('div');
             card.className = "driver-box";
 
-            // Corrected template for empty cards
             card.innerHTML = `
                 <div class="driver-header">
                     <h3>${driver}</h3>
@@ -408,11 +415,8 @@ function renderDriverCards(region) {
                     <div class="pval muted-text">P-value: —</div>
                 </div>
             `;
-
-
             container.appendChild(card);
         });
-
         return;
     }
 
@@ -457,7 +461,6 @@ function renderDriverCards(region) {
                 </div>
             </div>
         `;
-
         container.appendChild(card);
     });
 }
@@ -470,33 +473,13 @@ if (driverRegionSelect) {
     driverRegionSelect.addEventListener('change', () => {
         renderDriverCards(driverRegionSelect.value);
     });
-
 }
 
 
 /* =========================================================
-   DRIVER HISTORY SECTION (fallback included - unused)
+   DRIVER HISTORY SECTION (Unused Fallbacks)
 ========================================================= */
-const fallbackDriverData = {
-    "Logging":[{year:2015,value:22},{year:2016,value:23},{year:2017,value:24},{year:2018,value:25},{year:2019,value:26},{year:2020,value:25},{year:2021,value:24},{year:2022,value:25},{year:2023,value:26},{year:2024,value:25}],
-    "Agriculture":[{year:2015,value:38},{year:2016,value:39},{year:2017,value:39},{year:2018,value:40},{year:2019,value:41},{year:2020,value:40},{year:2021,value:39},{year:2022,value:40},{year:2023,value:41},{year:2024,value:40}],
-    "Urbanization":[{year:2015,value:13},{year:2016,value:14},{year:2017,value:14},{year:2018,value:15},{year:2019,value:16},{year:2020,value:15},{year:2021,value:14},{year:2022,value:15},{year:2023,value:16},{year:2024,value:15}],
-    "Mining":[{year:2015,value:9},{year:2016,value:9},{year:2017,value:10},{year:2018,value:10},{year:2019,value:11},{year:2020,value:10},{year:2021,value:9},{year:2022,value:10},{year:2023,value:11},{year:2024,value:10}]
-};
-
-function loadDriverHistory() {
-    // This function is currently not fully implemented in the HTML structure
-}
-function renderDriverHistory(rows) {
-    // This function is currently not fully implemented in the HTML structure
-}
-function loadDriverCoefficients() {
-    // This function is currently unused, replaced by renderDriverCards
-}
-
-/* =========================================================
-   ACCURACY TABLE AND CHART (Insights Section)
-========================================================= */
+// Removed unused fallback data and placeholder functions for a cleaner script.
 
 /* =========================================================
    ACCURACY TABLE AND CHART (Insights Section)
@@ -506,8 +489,11 @@ let accuracyChartInstance = null;
 
 function renderAccuracyChart(data, filter) {
     const container = document.getElementById('accuracy-chart-container');
+    if (!container) return;
+    
     const chartPlaceholder = container.querySelector('.chart-placeholder');
     const titleElement = container.querySelector('h3.card-title');
+    const chartCanvas = document.getElementById('accuracy-chart');
 
     // Filter data for the chart (excluding overall data)
     const chartData = data.filter(r => r.Region === filter);
@@ -521,13 +507,13 @@ function renderAccuracyChart(data, filter) {
 
     // Hide placeholder and update title
     chartPlaceholder.style.display = 'none';
-    titleElement.innerHTML = `<span class="title-text-wrapper">Forecast Error Trend for ${filter}</span>`;  
+    titleElement.innerHTML = `<span class="title-text-wrapper">Forecast Error Trend for ${filter}</span>`;  
 
     // Destroy existing chart if it exists
-    const ctx = document.getElementById('accuracy-chart').getContext('2d');
+    const ctx = chartCanvas.getContext('2d');
     if (accuracyChartInstance) accuracyChartInstance.destroy();
 
-    // Use default light chart styling (no specific 'white' or 'dark' colors)
+    // Use default light chart styling (black/grey for axes/text)
     accuracyChartInstance = new Chart(ctx, {
         type: 'line',
         data: {
@@ -536,7 +522,7 @@ function renderAccuracyChart(data, filter) {
                 {
                     label: 'Mean Absolute Error (MAE)',
                     data: chartData.map(r => r.AE),
-                    borderColor: '#f0a84b', // Orange (Matches Forecast Comparison)
+                    borderColor: '#f0a84b', // Orange (Warning)
                     backgroundColor: 'rgba(240, 168, 75, 0.1)',
                     yAxisID: 'y1',
                     borderWidth: 3,
@@ -546,7 +532,7 @@ function renderAccuracyChart(data, filter) {
                 {
                     label: 'Mean Absolute % Error (MAPE)',
                     data: chartData.map(r => r.APE),
-                    borderColor: '#2fa44f', // Green (Matches Actual Comparison)
+                    borderColor: '#2fa44f', // Green (Success)
                     backgroundColor: 'rgba(47, 164, 79, 0.1)',
                     yAxisID: 'y2',
                     borderWidth: 3,
@@ -559,47 +545,46 @@ function renderAccuracyChart(data, filter) {
             responsive: true,
             maintainAspectRatio: false,
             interaction: { mode: 'index', intersect: false },
-            
-            // ADJUSTED: Increase bottom padding to create margin and increase chart size
             layout: {
                 padding: {
                     left: 0,
                     right: 0,
                     top: 1,
-                    bottom: 0 // <-- Padding added here
+                    bottom: 0
                 }
             },
-            
             scales: {
                 x: {
-                    // Removed custom dark styling (reverts to default black/grey)
-                    grid: { color: 'rgba(0, 0, 0, 0.2)' }, 
-                    ticks: { color: 'black' } 
+                    grid: { color: 'rgba(0, 0, 0, 0.2)' },
+                    ticks: { color: 'black' }
                 },
                 y1: {
                     type: 'linear',
                     position: 'left',
-                    title: { display: true, text: 'MAE (Hectares)', color: 'black' }, // Reverted to black
-                    ticks: { callback: v => v.toLocaleString(), color: 'black' }, // Reverted to black
-                    grid: { color: 'rgba(0, 0, 0, 0.2)' } // Light grid lines
+                    title: { display: true, text: 'MAE (Hectares)', color: 'black' },
+                    ticks: { callback: v => v.toLocaleString(), color: 'black' },
+                    grid: { color: 'rgba(0, 0, 0, 0.2)' }
                 },
                 y2: {
                     type: 'linear',
                     position: 'right',
-                    title: { display: true, text: 'MAPE (%)', color: 'black' }, // Reverted to black
-                    ticks: { callback: v => v.toFixed(2) + '%', color: 'black' }, // Reverted to black
-                    grid: { drawOnChartArea: false } 
+                    title: { display: true, text: 'MAPE (%)', color: 'black' },
+                    ticks: { callback: v => v.toFixed(2) + '%', color: 'black' },
+                    grid: { drawOnChartArea: false }
                 }
             },
             plugins: {
-                legend: { labels: { color: 'black' } } // Reverted to black
+                legend: { labels: { color: 'black' } }
             }
         }
     });
 }
 
 function loadAccuracyTable(filter = '') {
-    const box = document.getElementById('accuracy-table-container').querySelector('.table-container');
+    const tableContainer = document.getElementById('accuracy-table-container');
+    if (!tableContainer) return;
+    
+    const box = tableContainer.querySelector('.table-container');
 
     let data = globalData.comparison;
     
@@ -630,14 +615,19 @@ function loadAccuracyTable(filter = '') {
     `;
 
     data.forEach(r => {
+        // Red if Absolute Error (AE) > 5% of Actual; Green otherwise
+        const maeColor = r.AE > r.Actual * 0.05 ? 'red' : 'green';
+        // Red if Absolute Percentage Error (APE) > 5%; Green otherwise
+        const mapeColor = r.APE > 5 ? 'red' : 'green';
+        
         html += `
             <tr>
                 <td>${r.Region}</td>
                 <td>${r.Year}</td>
                 <td>${r.Actual.toLocaleString()}</td>
                 <td>${r.SARIMAX_Forecast.toLocaleString()}</td>
-                <td style="color:${r.AE > r.Actual * 0.05 ? 'red' : 'green'}">${r.AE.toLocaleString()}</td>
-                <td style="color:${r.APE > 5 ? 'red' : 'green'}">${r.APE.toFixed(2)}%</td>
+                <td style="color:${maeColor}">${r.AE.toLocaleString()}</td>
+                <td style="color:${mapeColor}">${r.APE.toFixed(2)}%</td>
             </tr>
         `;
     });
@@ -661,12 +651,13 @@ if (accuracyRegionSelect) {
     });
 }
 
-// Auto-load all data on page load is handled by initializeData()
-
 /* =========================================================
    FOOTER YEAR
 ========================================================= */
-document.querySelector('#year').textContent = new Date().getFullYear();
+const yearElement = document.querySelector('#year');
+if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+}
 
 /* =========================================================
    INIT APP

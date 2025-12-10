@@ -1,322 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ForestCastPH - Forest Cover Analysis & Forecasting</title>
-<link rel="stylesheet" href="style.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ForestCastPH - Forest Cover Analysis & Forecasting</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<header class="site-header">
-<div class="container header-inner">
-<div class="brand">
-<img src="logo.png" alt="ForestCastPH logo" class="brand-logo" />
-<span class="brand-title">ForestCastPH</span>
-</div>
-<nav class="main-nav" aria-label="Primary navigation">
-<ul class="nav-list">
-<li><a href="#home" class="nav-link active">Home</a></li>
-<li><a href="#forest-cover" class="nav-link">Forest Cover</a></li>
-<li><a href="#drivers" class="nav-link">Drivers Analysis</a></li>
-<li><a href="#insights" class="nav-link">Data Insights</a></li>
-</ul>
-</nav>
-<button class="menu-toggle" aria-expanded="false" aria-label="Toggle menu">
-<span class="hamburger"></span>
-</button>
-</div>
-<div id="mobile-menu" class="mobile-menu" hidden>
-<ul class="mobile-list">
-<li><a href="#home" class="mobile-link">Home</a></li>
-<li><a href="#forest-cover" class="mobile-link">Forest Cover</a></li>
-<li><a href="#drivers" class="mobile-link">Drivers Analysis</a></li>
-<li><a href="#insights" class="mobile-link">Data Insights</a></li>
-</ul>
-</div>
-</header>
-
-<main>
-<section id="home" class="section hero">
-<div class="hero-bg"></div>
-<div class="container hero-content">
-<h1 class="hero-title">
-    Forecasting Forest Cover and <br>
-    Analysis Drivers of Deforestation <br>
-    in the Philippines
-</h1>
-<p class="hero-subtitle">
-    Analyze historical trends, forecast future forest cover,<br>
-    and understand key drivers through interactive visuals and scenario modeling.
-</p>
-<div class="hero-actions">
-<a href="#forest-cover" class="btn btn-primary">Explore Data</a>
-</div>
-</div>
-</section>
-
-<section id="tools" class="tools-section section">
-  <div class="container">
-    <div class="section-header">
-      <h2>Explore Our Tools</h2>
-      <p>Access analytics and insights to understand forest dynamics</p>
-    </div>
-
-    <div class="tools-grid">
-      <div class="tool-card">
-        <div class="tool-icon" style="background: linear-gradient(135deg,#6fa66f,#4d7c4d);">
-          <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="20" x2="12" y2="10"></line>
-            <line x1="18" y1="20" x2="18" y2="4"></line>
-            <line x1="6" y1="20" x2="6" y2="14"></line>
-          </svg>
-        </div>
-        <h3>Forest Cover Analysis</h3>
-        <p>Dashboard with historical trends and SARIMAX forecasts (2021–2025)</p>
-        <a href="#forest-cover" class="tool-link">View Dashboard →</a>
-      </div>
-
-      <div class="tool-card">
-        <div class="tool-icon" style="background: linear-gradient(135deg,#7acb6e,#4aa54a);">
-
-          <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 6l9-4 9 4-9 4-9-4z"></path>
-            <polyline points="3 6 3 18 12 22 21 18 21 6"></polyline>
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-          </svg>
-        </div>
-        <h3>Deforestation Drivers</h3>
-        <p>Analyze Agriculture, Logging, Urbanization, and Roads impact</p>
-        <a href="#drivers" class="tool-link">View Drivers →</a>
-      </div>
-
-      <div class="tool-card">
-       <div class="tool-icon" style="background: linear-gradient(135deg,#7acb6e,#4aa54a);">
-
-          <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="3"></rect>
-            <path d="M8 13l3 3 5-6"></path>
-          </svg>
-        </div>
-        <h3>Forecast Accuracy</h3>
-        <p>Compare SARIMAX predictions vs actual tree cover data</p>
-        <a href="#insights" class="tool-link">Access Tools →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-
-<section id="forest-cover" class="section">
-<div class="container">
-<div class="section-header">
-<h2>Forest Cover Analysis</h2>
-<p class="subtitle">Explore historical trends and SARIMAX forecast future forest cover</p>
-</div>
-<div class="content-grid">
-<div class="controls-panel card">
-<h3>Analysis Controls</h3>
-<p class="muted-text">Select region to view analysis</p>
-<form class="control-form">
-<div class="form-group">
-<label for="region-select">Select Region</label>
-<select id="region-select" class="select-input">
-<option value="">Loading regions...</option>
-</select>
-</div>
-</form>
-
-<div class="stats-grid">
-<div class="stat-card">
-<div class="stat-label">Latest Tree Cover</div>
-<div class="stat-value green" id="stat-area">N/A</div>
-<div class="stat-sublabel" id="stat-area-label">No Data Available</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Forecast 2025</div>
-<div class="stat-value orange" id="stat-forecast">N/A</div>
-<div class="stat-sublabel">SARIMAX Prediction</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Average MAE</div>
-<div class="stat-value" id="stat-mae">N/A</div>
-<div class="stat-sublabel">Mean Absolute Error</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Average MAPE</div>
-<div class="stat-value red" id="stat-mape">N/A</div>
-<div class="stat-sublabel">Mean Absolute % Error</div>
-</div>
-</div>
-</div>
-
-<div class="visualization-panel card">
-<div class="panel-header">
-<div class="tabs">
-<button class="tab active" data-tab="forecast">Forecast View</button>
-<button class="tab" data-tab="comparison">Accuracy View</button>
-</div>
-</div>
-<div id="chart-container" class="chart-container">
-<div class="chart-placeholder">
-<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="3" />
-        <path d="M8 12l3 3 5-6" />
-    </svg>
-<p>Select a region and run analysis to view visualization</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<section id="drivers" class="section secondary-bg-section">
-<div class="container">
-<div class="section-header">
-<h2>Deforestation Drivers Analysis</h2>
-<p class="subtitle">Linear regression coefficients showing driver impact on tree cover</p>
-</div>
-
-<div class="driver-controls full-width-card">
-    <label for="driver-region-select">Select Region</label>
-    <select id="driver-region-select" class="select-input">
-      <option value="">Select Region</option>
-    </select>
-
-</div>
-
-<div id="driver-cards" class="driver-grid-fixed"></div>
-
-
-</div>
-</section>
-
-<section id="insights" class="section insight-bg">
-<div class="container">
-<div class="section-header">
-<h2>Forecast Accuracy & Insights</h2>
-<p class="subtitle">Compare SARIMAX predictions with actual tree cover data (2021-2024)</p>
-</div>
-
-<div class="accuracy-controls card glass-card">
-<div class="form-group">
-<label for="accuracy-region-select">Select Region</label>
-<select id="accuracy-region-select" class="select-input">
-<option value="">All Regions</option>
-</select>
-</div>
-</div>
-
-<div class="accuracy-results-grid">
-    <div id="accuracy-chart-container" class="accuracy-chart-card card glass-card">
-        <h3 class="card-title">Forecast Error Trend (MAE/MAPE)</h3>
-        <canvas id="accuracy-chart"></canvas>
-        <div class="chart-placeholder">
-            <p>Select a region to view error trend (2021-2024)</p>
-        </div>
-    </div>
-    
-    <div id="accuracy-table-container" class="accuracy-table-card card glass-card">
-        <h3 class="card-title">Detailed Accuracy Metrics</h3>
-        <div class="table-container">
-            <div class="chart-placeholder">
-                <p>Loading accuracy data...</p>
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <img src="logo.png" alt="ForestCastPH logo" class="brand-logo" />
+                <span class="brand-title">ForestCastPH</span>
             </div>
+            <nav class="main-nav" aria-label="Primary navigation">
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#forest-cover" class="nav-link">Forest Cover</a></li>
+                    <li><a href="#drivers" class="nav-link">Drivers Analysis</a></li>
+                    <li><a href="#insights" class="nav-link">Data Insights</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-expanded="false" aria-label="Toggle menu">
+                <span class="hamburger"></span>
+            </button>
         </div>
-    </div>
-</div>
+        <div id="mobile-menu" class="mobile-menu" hidden>
+            <ul class="mobile-list">
+                <li><a href="#home" class="mobile-link">Home</a></li>
+                <li><a href="#forest-cover" class="mobile-link">Forest Cover</a></li>
+                <li><a href="#drivers" class="mobile-link">Drivers Analysis</a></li>
+                <li><a href="#insights" class="mobile-link">Data Insights</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="summary-stats card glass-card">
-<h3>Overall Performance Metrics</h3>
-<div class="metrics-grid">
-<div class="metric-card">
-<div class="metric-label">Overall MAE</div>
-<div class="metric-value" id="overall-mae">-</div>
-<div class="metric-sublabel">hectares</div>
-</div>
-<div class="metric-card">
-<div class="metric-label">Overall MAPE</div>
-<div class="metric-value" id="overall-mape">-</div>
-<div class="metric-sublabel">percentage</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-</main>
-
-<footer class="contact-footer">
-
-    <div class="contact-box glass">
-        <h2 class="contact-title">Contact Us</h2>
-        <p class="contact-sub">Have questions or feedback? We'd love to hear from you.</p>
-
-        <div class="contact-socials">
-
-    <a href="https://www.facebook.com/share/1Bs3wrAeGc/" target="_blank" class="social-btn" aria-label="Facebook">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-        </svg>
-    </a>
-
-    <a href="mailto:Aizacamillealvarez@gmail.com" class="social-btn" aria-label="Email">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="5" width="18" height="14" rx="2"/>
-            <polyline points="3 7 12 13 21 7"/>
-        </svg>
-    </a>
-
-    <a href="https://www.linkedin.com/in/camillealvarez17?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="social-btn" aria-label="LinkedIn">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2c-1.5 0-2.5 1-3 2v7H9v-14h4v2c1-1.5 2.8-3 5-3z"/>
-            <rect x="2" y="9" width="4" height="12"/>
-            <circle cx="4" cy="5" r="2"/>
-        </svg>
-    </a>
-
-    <a href="https://www.instagram.com/camille_0.1/" target="_blank" class="social-btn" aria-label="Instagram">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="5"/>
-            <circle cx="12" cy="12" r="4"/>
-            <circle cx="17" cy="7" r="1"/>
-        </svg>
-    </a>
-
-</div>
-
-    </div>
-
-    <hr class="footer-line">
-
-    <div class="footer-container">
-
-        <div class="footer-left">
-            <img src="logo.png" class="footer-logo" alt="ForestCastPH Logo">
-            <div>
-                <h3 class="footer-brand-name">ForestCastPH</h3>
-                <p class="footer-tagline">Forecasting Forest Cover in the Philippines</p>
+    <main>
+        <section id="home" class="section hero">
+            <div class="hero-bg"></div>
+            <div class="container hero-content">
+                <h1 class="hero-title">
+                    Forecasting Forest Cover and <br>
+                    Analysis Drivers of Deforestation <br>
+                    in the Philippines
+                </h1>
+                <p class="hero-subtitle">
+                    Analyze historical trends, forecast future forest cover,<br>
+                    and understand key drivers through interactive visuals and scenario modeling.
+                </p>
+                <div class="hero-actions">
+                    <a href="#forest-cover" class="btn btn-primary">Explore Data</a>
+                </div>
             </div>
+        </section>
+
+        <section id="tools" class="tools-section section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Explore Our Tools</h2>
+                    <p>Access analytics and insights to understand forest dynamics</p>
+                </div>
+
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon" style="background: linear-gradient(135deg,#6fa66f,#4d7c4d);">
+                            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="20" x2="12" y2="10"></line>
+                                <line x1="18" y1="20" x2="18" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                        </div>
+                        <h3>Forest Cover Analysis</h3>
+                        <p>Dashboard with historical trends and SARIMAX forecasts (2021–2025)</p>
+                        <a href="#forest-cover" class="tool-link">View Dashboard →</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-icon" style="background: linear-gradient(135deg,#7acb6e,#4aa54a);">
+
+                            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 6l9-4 9 4-9 4-9-4z"></path>
+                                <polyline points="3 6 3 18 12 22 21 18 21 6"></polyline>
+                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                            </svg>
+                        </div>
+                        <h3>Deforestation Drivers</h3>
+                        <p>Analyze Agriculture, Logging, Urbanization, and Roads impact</p>
+                        <a href="#drivers" class="tool-link">View Drivers →</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-icon" style="background: linear-gradient(135deg,#7acb6e,#4aa54a);">
+
+                            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+                                <path d="M8 13l3 3 5-6"></path>
+                            </svg>
+                        </div>
+                        <h3>Forecast Accuracy</h3>
+                        <p>Compare SARIMAX predictions vs actual tree cover data</p>
+                        <a href="#insights" class="tool-link">Access Tools →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="forest-cover" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Forest Cover Analysis</h2>
+                    <p class="subtitle">Explore historical trends and SARIMAX forecast future forest cover</p>
+                </div>
+                <div class="content-grid">
+                    <div class="controls-panel card">
+                        <h3>Analysis Controls</h3>
+                        <p class="muted-text">Select region to view analysis</p>
+                        <form class="control-form">
+                            <div class="form-group">
+                                <label for="region-select">Select Region</label>
+                                <select id="region-select" class="select-input">
+                                    <option value="">Loading regions...</option>
+                                </select>
+                            </div>
+                        </form>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-label">Latest Tree Cover</div>
+                                <div class="stat-value green" id="stat-area">N/A</div>
+                                <div class="stat-sublabel" id="stat-area-label">No Data Available</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Forecast 2025</div>
+                                <div class="stat-value orange" id="stat-forecast">N/A</div>
+                                <div class="stat-sublabel">SARIMAX Prediction</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Average MAE</div>
+                                <div class="stat-value" id="stat-mae">N/A</div>
+                                <div class="stat-sublabel">Mean Absolute Error</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Average MAPE</div>
+                                <div class="stat-value red" id="stat-mape">N/A</div>
+                                <div class="stat-sublabel">Mean Absolute % Error</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="visualization-panel card">
+                        <div class="panel-header">
+                            <div class="tabs">
+                                <button class="tab active" data-tab="forecast">Forecast View</button>
+                                <button class="tab" data-tab="comparison">Accuracy View</button>
+                            </div>
+                        </div>
+                        <div id="chart-container" class="chart-container">
+                            <div class="chart-placeholder">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                                    <path d="M8 12l3 3 5-6" />
+                                </svg>
+                                <p>Select a region and run analysis to view visualization</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="drivers" class="section secondary-bg-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Deforestation Drivers Analysis</h2>
+                    <p class="subtitle">Linear regression coefficients showing driver impact on tree cover</p>
+                </div>
+
+                <div class="driver-controls full-width-card">
+                    <label for="driver-region-select">Select Region</label>
+                    <select id="driver-region-select" class="select-input">
+                        <option value="">Select Region</option>
+                    </select>
+
+                </div>
+
+                <div id="driver-cards" class="driver-grid-fixed"></div>
+
+
+            </div>
+        </section>
+
+        <section id="insights" class="section insight-bg">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Forecast Accuracy & Insights</h2>
+                    <p class="subtitle">Compare SARIMAX predictions with actual tree cover data (2021-2024)</p>
+                </div>
+
+                <div class="accuracy-controls card glass-card">
+                    <div class="form-group">
+                        <label for="accuracy-region-select">Select Region</label>
+                        <select id="accuracy-region-select" class="select-input">
+                            <option value="">All Regions</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="accuracy-results-grid">
+                    <div id="accuracy-chart-container" class="accuracy-chart-card card glass-card">
+                        <h3 class="card-title">Forecast Error Trend (MAE/MAPE)</h3>
+                        <canvas id="accuracy-chart"></canvas>
+                        <div class="chart-placeholder">
+                            <p>Select a region to view error trend (2021-2024)</p>
+                        </div>
+                    </div>
+                    
+                    <div id="accuracy-table-container" class="accuracy-table-card card glass-card">
+                        <h3 class="card-title">Detailed Accuracy Metrics</h3>
+                        <div class="table-container">
+                            <div class="chart-placeholder">
+                                <p>Loading accuracy data...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-stats card glass-card">
+                    <h3>Overall Performance Metrics</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Overall MAE</div>
+                            <div class="metric-value" id="overall-mae">-</div>
+                            <div class="metric-sublabel">hectares</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Overall MAPE</div>
+                            <div class="metric-value" id="overall-mape">-</div>
+                            <div class="metric-sublabel">percentage</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="contact-footer">
+
+        <div class="contact-box glass">
+            <h2 class="contact-title">Contact Us</h2>
+            <p class="contact-sub">Have questions or feedback? We'd love to hear from you.</p>
+
+            <div class="contact-socials">
+
+                <a href="https://www.facebook.com/share/1Bs3wrAeGc/" target="_blank" class="social-btn" aria-label="Facebook">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                    </svg>
+                </a>
+
+                <a href="mailto:Aizacamillealvarez@gmail.com" class="social-btn" aria-label="Email">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="5" width="18" height="14" rx="2"/>
+                        <polyline points="3 7 12 13 21 7"/>
+                    </svg>
+                </a>
+
+                <a href="https://www.linkedin.com/in/camillealvarez17?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="social-btn" aria-label="LinkedIn">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2c-1.5 0-2.5 1-3 2v7H9v-14h4v2c1-1.5 2.8-3 5-3z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="5" r="2"/>
+                    </svg>
+                </a>
+
+                <a href="https://www.instagram.com/camille_0.1/" target="_blank" class="social-btn" aria-label="Instagram">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="5"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <circle cx="17" cy="7" r="1"/>
+                    </svg>
+                </a>
+
+            </div>
+
         </div>
 
-        <div class="footer-right">
-            <a href="#home">Home</a>
-            <a href="#forest-cover">Forest Cover</a>
-            <a href="#drivers">Drivers Analysis</a>
-            <a href="#insights">Data Insights</a>
+        <hr class="footer-line">
+
+        <div class="footer-container">
+
+            <div class="footer-left">
+                <img src="logo.png" class="footer-logo" alt="ForestCastPH Logo">
+                <div>
+                    <h3 class="footer-brand-name">ForestCastPH</h3>
+                    <p class="footer-tagline">Forecasting Forest Cover in the Philippines</p>
+                </div>
+            </div>
+
+            <div class="footer-right">
+                <a href="#home">Home</a>
+                <a href="#forest-cover">Forest Cover</a>
+                <a href="#drivers">Drivers Analysis</a>
+                <a href="#insights">Data Insights</a>
+            </div>
+
         </div>
 
-    </div>
-
-    <p class="footer-copy">© <span id="year"></span> ForestCastPH. All rights reserved.</p>
-</footer>
+        <p class="footer-copy">© <span id="year"></span> ForestCastPH. All rights reserved.</p>
+    </footer>
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
